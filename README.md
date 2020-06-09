@@ -10,6 +10,6 @@ The aim is to explore the compile time facilities of different languages.
 
 | Language | Status |
 | -------- | ------ |
-| D | |
+| D | [![builds.sr.ht D status](https://builds.sr.ht/~euantorano/compile-time-string-validation/d.yml.svg)](https://builds.sr.ht/~euantorano/compile-time-string-validation/d.yml?) |
 | Nim | |
 | Zig | |
