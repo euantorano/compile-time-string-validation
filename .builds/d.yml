@@ -1,0 +1,42 @@
+image: debian/stable
+packages:
+- curl
+sources:
+- https://github.com/euantorano/compile-time-string-validation
+tasks:
+- setup: |
+    curl -fsS https://dlang.org/install.sh | bash -s dmd
+    echo 'source $(~/dlang/install.sh dmd -a)' >> $HOME/.buildenv
+- test_valid: |
+    cd compile-time-string-validation
+    OUTPUT=$(dmd -run d/main.d 2>&1)
+    RESULT=$?
+
+    if [ $RESULT -ne 0 ]; then
+      >&2 echo "unxpected status code: ${RESULT}"
+      exit 1
+    fi
+
+    if [ "${OUTPUT}" = "valid promises: stdio rpath wpath\n" ]; then
+      >&2 echo "unxpected output: ${OUTPUT}"
+      exit 1
+    fi
+- test_invalid: |
+    cd compile-time-string-validation
+    set +e
+    OUTPUT=$(dmd -version=invalidPromises -run d/main.d 2>&1)
+    RESULT=$?
+
+    if [ $RESULT -eq 0 ]; then
+      >&2 echo "unxpected status code: ${RESULT}"
+      exit 1
+    fi
+
+    echo "${OUTPUT}" | grep -q "invalid promises: stdio foobar"
+    GREP_RESULT=$?
+
+    if [ $GREP_RESULT -ne 0 ]; then
+      >&2 echo "expected message not found: ${EXPECTED_MSG}"
+      >&2 echo "${OUTPUT}"
+      exit 1
+    fi
