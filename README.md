@@ -12,4 +12,4 @@ The aim is to explore the compile time facilities of different languages.
 | -------- | ------ |
 | D | [![builds.sr.ht status](https://builds.sr.ht/~euantorano/compile-time-string-validation/commits/d.yml.svg)](https://builds.sr.ht/~euantorano/compile-time-string-validation/commits/d.yml?) |
 | Nim | [![builds.sr.ht status](https://builds.sr.ht/~euantorano/compile-time-string-validation/commits/nim.yml.svg)](https://builds.sr.ht/~euantorano/compile-time-string-validation/commits/nim.yml?) |
-| Zig | |
+| Zig | [![builds.sr.ht status](https://builds.sr.ht/~euantorano/compile-time-string-validation/commits/zig.yml.svg)](https://builds.sr.ht/~euantorano/compile-time-string-validation/commits/zig.yml?) |

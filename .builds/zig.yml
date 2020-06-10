@@ -1,0 +1,41 @@
+image: debian/stable
+packages:
+- zig
+repositories:
+  zig: https://dl.bintray.com/dryzig/zig-debian buster main 379CE192D401AB61
+sources:
+- https://github.com/euantorano/compile-time-string-validation
+tasks:
+- test_valid: |
+    cd compile-time-string-validation/zig
+    OUTPUT=$(zig build run 2>&1)
+    RESULT=$?
+
+    if [ $RESULT -ne 0 ]; then
+      >&2 echo "unxpected status code: ${RESULT}"
+      exit 1
+    fi
+
+    if [ "${OUTPUT}" = "valid promises: stdio rpath wpath\n" ]; then
+      >&2 echo "unxpected output: ${OUTPUT}"
+      exit 1
+    fi
+- test_invalid: |
+    cd compile-time-string-validation/zig
+    set +e
+    OUTPUT=$(zig build run -DinvalidPromises=true 2>&1)
+    RESULT=$?
+
+    if [ $RESULT -eq 0 ]; then
+      >&2 echo "unxpected status code: ${RESULT}"
+      exit 1
+    fi
+
+    echo "${OUTPUT}" | grep -q "invalid promises: stdio foobar"
+    GREP_RESULT=$?
+
+    if [ $GREP_RESULT -ne 0 ]; then
+      >&2 echo "expected message not found: ${EXPECTED_MSG}"
+      >&2 echo "${OUTPUT}"
+      exit 1
+    fi
